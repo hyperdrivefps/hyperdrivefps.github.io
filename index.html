@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>HyperDrive – Fortnite-Optimizer für Windows</title>
-<meta name="description" content="HyperDrive: Mehr FPS, weniger Input-Delay und ein schnellerer PC für Fortnite. Kostenlos für Windows 10 und 11.">
+<title>HyperDrive – Fortnite optimizer for Windows</title>
+<meta name="description" content="HyperDrive: more FPS, less input delay and a faster PC for Fortnite. Free for Windows 10 and 11.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237c5cff'/%3E%3Cstop offset='1' stop-color='%2300d4ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Cpath d='M36 8 16 36h14l-4 20 22-30H34z' fill='white'/%3E%3C/svg%3E">
 <style>
   :root {
@@ -156,6 +156,61 @@
   nav { transition: background .3s, box-shadow .3s; }
   nav.scrolled { background: rgba(11,12,18,.92); box-shadow: 0 10px 30px rgba(0,0,0,.35); }
 
+  /* ================= Sprache ================= */
+  html:not([lang="de"]) [data-l="de"], html[lang="de"] [data-l="en"] { display: none !important; }
+  .lang { display: inline-flex; background: var(--panel); border: 1px solid rgba(255,255,255,.08); border-radius: 10px; padding: 3px; }
+  .lang button { all: unset; cursor: pointer; padding: 4px 10px; border-radius: 7px; font-weight: 700; font-size: 13px; color: var(--muted); transition: background .2s, color .2s; }
+  .lang button[aria-pressed="true"] { background: linear-gradient(90deg, var(--a1), var(--a2)); color: #fff; }
+  .lang button:focus-visible { outline: 2px solid var(--a2); outline-offset: 2px; }
+  @media (max-width: 640px) { .navlinks { gap: 12px; } .navlinks .btn { padding: 8px 12px; } }
+
+  /* ================= Galerie ================= */
+  .tabs { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-bottom: 26px; }
+  .tabs button { all: unset; cursor: pointer; padding: 9px 18px; border-radius: 999px; background: var(--panel); border: 1px solid rgba(255,255,255,.08); color: var(--muted); font-weight: 600; transition: color .2s, border-color .2s, background .2s; }
+  .tabs button:hover { color: var(--text); }
+  .tabs button[aria-selected="true"] { color: #fff; border-color: transparent; background: linear-gradient(90deg, rgba(124,92,255,.55), rgba(0,212,255,.4)); }
+  .tabs button:focus-visible { outline: 2px solid var(--a2); outline-offset: 2px; }
+  .gallery { max-width: 980px; margin: 0 auto; }
+  .frame { border-radius: 18px; padding: 8px; background: linear-gradient(135deg, rgba(124,92,255,.45), rgba(0,212,255,.3)); box-shadow: 0 30px 90px rgba(0,0,0,.5); }
+  .frame img { display: block; width: 100%; height: auto; border-radius: 12px; transition: opacity .25s, transform .35s cubic-bezier(.2,.8,.2,1); }
+  .frame img.swap { opacity: 0; transform: scale(.985); }
+  .caption { text-align: center; color: var(--muted); margin-top: 16px; min-height: 1.6em; }
+
+  /* ================= Update-Verlauf ================= */
+  .timeline { max-width: 760px; margin: 0 auto; position: relative; padding-left: 30px; }
+  .timeline::before { content: ""; position: absolute; left: 9px; top: 8px; bottom: 8px; width: 2px; border-radius: 2px; background: linear-gradient(var(--a1), var(--a2), transparent); }
+  .rel { position: relative; background: var(--panel); border: 1px solid rgba(255,255,255,.06); border-radius: 16px; padding: 18px 22px; margin-bottom: 14px; }
+  .rel::before { content: ""; position: absolute; left: -27px; top: 22px; width: 12px; height: 12px; border-radius: 50%; background: var(--panel2); border: 2px solid var(--a2); }
+  .rel.latest { border-color: rgba(0,212,255,.35); }
+  .rel.latest::before { background: var(--a2); box-shadow: 0 0 0 6px rgba(0,212,255,.15); }
+  .rel .v { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-weight: 800; font-size: 18px; margin-bottom: 6px; }
+  .rel .v small { color: var(--muted); font-weight: 500; font-size: 14px; }
+  .badge { font-size: 12px; font-weight: 700; padding: 2px 9px; border-radius: 999px; background: rgba(46,230,140,.14); color: var(--green); }
+  .rel ul { margin: 0; padding-left: 18px; color: var(--muted); }
+  .rel li { margin: 2px 0; }
+  .rel li::marker { color: var(--a2); }
+  .more { all: unset; cursor: pointer; color: var(--a2); font-weight: 600; }
+  .more-wrap { text-align: center; }
+
+  /* ================= FAQ ================= */
+  .faq { max-width: 780px; margin: 0 auto; display: grid; gap: 10px; }
+  .faq details { background: var(--panel); border: 1px solid rgba(255,255,255,.06); border-radius: 14px; transition: border-color .2s; }
+  .faq details[open] { border-color: rgba(124,92,255,.4); }
+  .faq summary { cursor: pointer; list-style: none; padding: 16px 20px; font-weight: 700; display: flex; justify-content: space-between; gap: 16px; align-items: center; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: "+"; font-size: 22px; line-height: 1; color: var(--a2); transition: transform .25s; flex: none; }
+  .faq details[open] summary::after { transform: rotate(45deg); }
+  .faq summary:focus-visible { outline: 2px solid var(--a2); outline-offset: -2px; border-radius: 14px; }
+  .faq .a { padding: 0 20px 18px; color: var(--muted); }
+  .faq .a p { margin: 0; }
+  .faq details[open] .a { animation: faqIn .3s ease; }
+  @keyframes faqIn { from { opacity: 0; transform: translateY(-6px); } }
+
+  footer .links { margin-top: 8px; display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; }
+  footer .links a { color: var(--muted); }
+
+  h1 span.plain { background: none; color: inherit; animation: none; }
+
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
     .hero-in, .reveal { opacity: 1; transform: none; }
@@ -172,9 +227,14 @@
       <b>HYPERDRIVE</b>
     </a>
     <div class="navlinks">
-      <a href="#features">Funktionen</a>
-      <a href="#install">Installation</a>
-      <a href="#neu">Neu</a>
+      <a href="#features"><span data-l="en">Features</span><span data-l="de">Funktionen</span></a>
+      <a href="#screens"><span data-l="en">Screenshots</span><span data-l="de">Bilder</span></a>
+      <a href="#updates">Updates</a>
+      <a href="#faq">FAQ</a>
+      <div class="lang" role="group" aria-label="Language / Sprache">
+        <button type="button" data-set="en" aria-pressed="true">EN</button>
+        <button type="button" data-set="de" aria-pressed="false">DE</button>
+      </div>
       <a class="btn dl" href="#">Download</a>
     </div>
   </div>
@@ -182,53 +242,174 @@
 
 <header>
   <div class="wrap">
-    <span class="pill hero-in">Kostenlos für Windows 10 &amp; 11</span>
-    <h1 class="hero-in">Mehr FPS.<br><span>Weniger Input-Delay.</span></h1>
-    <p class="lead hero-in">HyperDrive optimiert deinen PC mit einem Klick für Fortnite – über 50 Tweaks für FPS, Ping und Eingabeverzögerung, ein RAM-Cleaner, Game-Modus und mehr.</p>
+    <span class="pill hero-in"><span data-l="en">Free for Windows 10 &amp; 11</span><span data-l="de">Kostenlos für Windows 10 &amp; 11</span></span>
+    <h1 class="hero-in"><span data-l="en" class="plain">More FPS.<br></span><span data-l="de" class="plain">Mehr FPS.<br></span><span data-l="en">Less input delay.</span><span data-l="de">Weniger Input-Delay.</span></h1>
+    <p class="lead hero-in">
+      <span data-l="en">HyperDrive tunes your PC for Fortnite in one click – 50+ tweaks for FPS, ping and input delay, a Pro-Check that finds what slows you down, a RAM cleaner and more.</span>
+      <span data-l="de">HyperDrive optimiert deinen PC mit einem Klick für Fortnite – über 50 Tweaks für FPS, Ping und Input-Delay, ein Pro-Check, der Bremsen findet, ein RAM-Cleaner und mehr.</span>
+    </p>
     <a class="btn big dl hero-in" href="#">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M6 10l6 6 6-6M4 21h16"/></svg>
-      HyperDrive herunterladen
+      <span data-l="en">Download HyperDrive</span><span data-l="de">HyperDrive herunterladen</span>
     </a>
     <div class="meta hero-in" id="meta">Windows 10 / 11 • 64 Bit</div>
-    <div class="shot-wrap hero-in"><div class="shot" id="shot"><img src="screenshot.png" alt="Das HyperDrive-Dashboard mit CPU-, GPU-, RAM- und Laufwerksanzeige und dem Turbo-Boost-Knopf" width="1126" height="740"></div></div>
+    <div class="shot-wrap hero-in"><div class="shot" id="shot"><img id="hero-img" src="img/en-0.png" alt="" width="1126" height="740"></div></div>
   </div>
 </header>
 
 <section id="features">
   <div class="wrap">
-    <h2 class="reveal">Alles, was dein Gaming-PC braucht</h2>
-    <p class="sub reveal">Jede Änderung lässt sich mit einem Klick rückgängig machen – vorher legt HyperDrive einen Wiederherstellungspunkt an.</p>
+    <h2 class="reveal"><span data-l="en">Everything your gaming PC needs</span><span data-l="de">Alles, was dein Gaming-PC braucht</span></h2>
+    <p class="sub reveal"><span data-l="en">Every change can be undone in one click – HyperDrive creates a restore point first.</span><span data-l="de">Jede Änderung lässt sich mit einem Klick rückgängig machen – vorher legt HyperDrive einen Wiederherstellungspunkt an.</span></p>
     <div class="grid">
-      <div class="card reveal"><div class="ic"><svg viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></svg></div><h3>Turbo-Boost</h3><p>Ein Klick: Wiederherstellungspunkt, Bereinigung, RAM, Gaming-Tweaks und DNS.</p></div>
-      <div class="card reveal"><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 18h16M7 14l3-4 3 3 4-6"/></svg></div><h3>50+ Tweaks</h3><p>Für FPS, Input-Delay und Ping – mit ehrlicher Einschätzung, was jeder Tweak bringt.</p></div>
-      <div class="card reveal"><div class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="3"/><path d="M8 12h3M9.5 10.5v3M15 11h.01M17 13h.01"/></svg></div><h3>Fortnite-Presets</h3><p>Competitive, Balanced oder Potato – die passenden Grafik-Einstellungen in Sekunden.</p></div>
-      <div class="card reveal"><div class="ic"><svg viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="10" rx="1"/><path d="M8 7V4M12 7V4M16 7V4M8 20v-3M12 20v-3M16 20v-3"/></svg></div><h3>RAM-Cleaner</h3><p>Findet Speicherfresser, leert den Standby-Speicher und räumt automatisch auf.</p></div>
-      <div class="card reveal"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></div><h3>Spielersuche</h3><p>Finde andere HyperDrive-Spieler – mit Profil, Rang, Spielen und Bestwerten.</p></div>
-      <div class="card reveal"><div class="ic"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"/></svg></div><h3>Automatische Updates</h3><p>Neue Versionen kommen von selbst – jedes Update ist digital signiert und wird vor der Installation geprüft.</p></div>
+      <div class="card reveal"><div class="ic"><svg viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></svg></div>
+        <h3>Turbo Boost</h3>
+        <p data-l="en">One click: restore point, cleanup, RAM, gaming tweaks and DNS.</p>
+        <p data-l="de">Ein Klick: Wiederherstellungspunkt, Bereinigung, RAM, Gaming-Tweaks und DNS.</p></div>
+      <div class="card reveal"><div class="ic"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg></div>
+        <h3>Pro-Check</h3>
+        <p data-l="en">Checks everything that matters for stable FPS, ping and input delay – and fixes it in one click.</p>
+        <p data-l="de">Prüft alles, was für konstante FPS, Ping und Input-Delay zählt – und behebt es per Klick.</p></div>
+      <div class="card reveal"><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 18h16M7 14l3-4 3 3 4-6"/></svg></div>
+        <h3><span data-l="en">50+ tweaks</span><span data-l="de">50+ Tweaks</span></h3>
+        <p data-l="en">Sorted in tabs, with an honest rating of what each tweak really does.</p>
+        <p data-l="de">In Reitern sortiert – mit ehrlicher Einschätzung, was jeder Tweak wirklich bringt.</p></div>
+      <div class="card reveal"><div class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="3"/><path d="M8 12h3M9.5 10.5v3M15 11h.01M17 13h.01"/></svg></div>
+        <h3><span data-l="en">Fortnite presets</span><span data-l="de">Fortnite-Presets</span></h3>
+        <p data-l="en">Competitive, Balanced or Potato – the right graphics settings in seconds.</p>
+        <p data-l="de">Competitive, Balanced oder Potato – die passenden Grafik-Einstellungen in Sekunden.</p></div>
+      <div class="card reveal"><div class="ic"><svg viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="10" rx="1"/><path d="M8 7V4M12 7V4M16 7V4M8 20v-3M12 20v-3M16 20v-3"/></svg></div>
+        <h3><span data-l="en">RAM cleaner</span><span data-l="de">RAM-Cleaner</span></h3>
+        <p data-l="en">Finds memory hogs, empties the standby list and cleans up automatically.</p>
+        <p data-l="de">Findet Speicherfresser, leert den Standby-Speicher und räumt automatisch auf.</p></div>
+      <div class="card reveal"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></div>
+        <h3><span data-l="en">Player search</span><span data-l="de">Spielersuche</span></h3>
+        <p data-l="en">Find other HyperDrive players – with profile, rank, games and best scores.</p>
+        <p data-l="de">Finde andere HyperDrive-Spieler – mit Profil, Rang, Spielen und Bestwerten.</p></div>
+      <div class="card reveal"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/><circle cx="12" cy="12" r="10" stroke-dasharray="3 3"/></svg></div>
+        <h3><span data-l="en">Mouse test</span><span data-l="de">Maus-Test</span></h3>
+        <p data-l="en">Measures your real polling rate – so you know whether 1000 Hz really arrive.</p>
+        <p data-l="de">Misst deine echte Abfragerate – damit du weißt, ob 1000 Hz wirklich ankommen.</p></div>
+      <div class="card reveal"><div class="ic"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"/></svg></div>
+        <h3><span data-l="en">Automatic updates</span><span data-l="de">Automatische Updates</span></h3>
+        <p data-l="en">New versions arrive by themselves – every update is digitally signed and verified before it installs.</p>
+        <p data-l="de">Neue Versionen kommen von selbst – jedes Update ist digital signiert und wird vor der Installation geprüft.</p></div>
+      <div class="card reveal"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></div>
+        <h3><span data-l="en">English &amp; German</span><span data-l="de">Englisch &amp; Deutsch</span></h3>
+        <p data-l="en">Switch the language anytime with one click at the top right of the app.</p>
+        <p data-l="de">Sprache jederzeit mit einem Klick oben rechts in der App umschalten.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="screens">
+  <div class="wrap">
+    <h2 class="reveal"><span data-l="en">Take a look inside</span><span data-l="de">Ein Blick hinein</span></h2>
+    <p class="sub reveal"><span data-l="en">Dark, clean and fast – everything at a glance.</span><span data-l="de">Dunkel, aufgeräumt und schnell – alles auf einen Blick.</span></p>
+    <div class="gallery reveal">
+      <div class="tabs" role="tablist">
+        <button type="button" role="tab" data-shot="0" aria-selected="true">Dashboard</button>
+        <button type="button" role="tab" data-shot="13" aria-selected="false">Pro-Check</button>
+        <button type="button" role="tab" data-shot="5" aria-selected="false">Tweaks</button>
+      </div>
+      <div class="frame"><img id="gal-img" src="img/en-0.png" alt="" width="1126" height="740" loading="lazy"></div>
+      <p class="caption" id="gal-cap"></p>
     </div>
   </div>
 </section>
 
 <section id="install">
   <div class="wrap">
-    <h2 class="reveal">In einer Minute installiert</h2>
-    <p class="sub reveal">Keine Werbung, keine Toolbars – nur HyperDrive.</p>
+    <h2 class="reveal"><span data-l="en">Installed in a minute</span><span data-l="de">In einer Minute installiert</span></h2>
+    <p class="sub reveal"><span data-l="en">No ads, no toolbars – just HyperDrive.</span><span data-l="de">Keine Werbung, keine Toolbars – nur HyperDrive.</span></p>
     <div class="steps">
-      <div class="step reveal"><h3>Herunterladen</h3><p>Klick auf „Download“. Du bekommst die Datei <code>HyperDrive-Setup.exe</code>.</p></div>
-      <div class="step reveal"><h3>Starten</h3><p>Datei öffnen und bei der Windows-Abfrage auf <code>Ja</code> klicken – HyperDrive braucht Admin-Rechte für die Tweaks.</p></div>
-      <div class="step reveal"><h3>Installieren</h3><p>Auf <code>Installieren</code> klicken. HyperDrive landet im Startmenü und auf dem Desktop – fertig.</p></div>
+      <div class="step reveal"><h3><span data-l="en">Download</span><span data-l="de">Herunterladen</span></h3>
+        <p data-l="en">Click “Download”. You get the file <code>HyperDrive-Setup.exe</code>.</p>
+        <p data-l="de">Klick auf „Download“. Du bekommst die Datei <code>HyperDrive-Setup.exe</code>.</p></div>
+      <div class="step reveal"><h3><span data-l="en">Run</span><span data-l="de">Starten</span></h3>
+        <p data-l="en">Open the file and click <code>Yes</code> when Windows asks – HyperDrive needs admin rights for the tweaks.</p>
+        <p data-l="de">Datei öffnen und bei der Windows-Abfrage auf <code>Ja</code> klicken – HyperDrive braucht Admin-Rechte für die Tweaks.</p></div>
+      <div class="step reveal"><h3><span data-l="en">Install</span><span data-l="de">Installieren</span></h3>
+        <p data-l="en">Click <code>Install</code>. HyperDrive appears in the Start menu and on your desktop – done.</p>
+        <p data-l="de">Auf <code>Installieren</code> klicken. HyperDrive landet im Startmenü und auf dem Desktop – fertig.</p></div>
     </div>
-    <div class="note reveal"><b>Blauer Windows-Hinweis „Der Computer wurde durch Windows geschützt“?</b> Das kommt bei neuen Programmen ohne gekauftes Zertifikat. Klick auf <b>„Weitere Informationen“</b> und dann auf <b>„Trotzdem ausführen“</b>.</div>
+    <div class="note reveal">
+      <span data-l="en"><b>Blue “Windows protected your PC” message?</b> That shows up for new programs without a paid certificate. Click <b>“More info”</b> and then <b>“Run anyway”</b>.</span>
+      <span data-l="de"><b>Blauer Windows-Hinweis „Der Computer wurde durch Windows geschützt“?</b> Das kommt bei neuen Programmen ohne gekauftes Zertifikat. Klick auf <b>„Weitere Informationen“</b> und dann auf <b>„Trotzdem ausführen“</b>.</span>
+    </div>
   </div>
 </section>
 
-<section id="neu">
+<section id="updates">
   <div class="wrap">
-    <h2 class="reveal">Was ist neu?</h2>
-    <p class="sub reveal">Installierte Versionen aktualisieren sich automatisch.</p>
-    <div class="changelog reveal">
-      <div class="v"><span id="cl-version">Neueste Version</span><span id="cl-date"></span></div>
-      <p id="cl-notes">Lade …</p>
+    <h2 class="reveal"><span data-l="en">Update history</span><span data-l="de">Update-Verlauf</span></h2>
+    <p class="sub reveal"><span data-l="en">Installed copies update themselves automatically.</span><span data-l="de">Installierte Versionen aktualisieren sich automatisch.</span></p>
+    <div class="timeline reveal" id="timeline"></div>
+    <div class="more-wrap"><button type="button" class="more" id="more" hidden></button></div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <h2 class="reveal"><span data-l="en">Questions &amp; answers</span><span data-l="de">Fragen &amp; Antworten</span></h2>
+    <p class="sub reveal"><span data-l="en">The things people ask most.</span><span data-l="de">Was am häufigsten gefragt wird.</span></p>
+    <div class="faq">
+      <details class="reveal">
+        <summary><span data-l="en">Is HyperDrive safe?</span><span data-l="de">Ist HyperDrive sicher?</span></summary>
+        <div class="a">
+          <p data-l="en">Yes. Before the first changes HyperDrive creates a Windows restore point, and every tweak can be switched back in the app. Updates are digitally signed – the app refuses any file that doesn't carry the right signature.</p>
+          <p data-l="de">Ja. Vor den ersten Änderungen legt HyperDrive einen Windows-Wiederherstellungspunkt an, und jeder Tweak lässt sich in der App wieder zurückschalten. Updates sind digital signiert – die App lehnt jede Datei ohne passende Signatur ab.</p>
+        </div>
+      </details>
+      <details class="reveal">
+        <summary><span data-l="en">Can I get banned in Fortnite?</span><span data-l="de">Kann ich in Fortnite gebannt werden?</span></summary>
+        <div class="a">
+          <p data-l="en">HyperDrive is not a cheat. It never touches the game while it's running, doesn't inject anything and doesn't modify game files. It only changes Windows settings and Fortnite's normal settings file – the same things you could change by hand.</p>
+          <p data-l="de">HyperDrive ist kein Cheat. Es greift nie ins laufende Spiel ein, injiziert nichts und verändert keine Spieldateien. Es ändert nur Windows-Einstellungen und die normale Einstellungsdatei von Fortnite – also Dinge, die du auch von Hand ändern könntest.</p>
+        </div>
+      </details>
+      <details class="reveal">
+        <summary><span data-l="en">Why does Windows warn me when I start it?</span><span data-l="de">Warum warnt Windows beim Starten?</span></summary>
+        <div class="a">
+          <p data-l="en">Windows SmartScreen warns about new programs that aren't signed with a paid certificate yet. Click “More info” and then “Run anyway”. You only have to do this once.</p>
+          <p data-l="de">Windows SmartScreen warnt bei neuen Programmen, die noch nicht mit einem gekauften Zertifikat signiert sind. Klick auf „Weitere Informationen“ und dann auf „Trotzdem ausführen“. Das musst du nur einmal machen.</p>
+        </div>
+      </details>
+      <details class="reveal">
+        <summary><span data-l="en">Why does it need admin rights?</span><span data-l="de">Warum braucht es Admin-Rechte?</span></summary>
+        <div class="a">
+          <p data-l="en">Most tweaks change system-wide Windows settings (power plan, services, network, GPU scheduling). Windows only allows that with admin rights.</p>
+          <p data-l="de">Die meisten Tweaks ändern systemweite Windows-Einstellungen (Energiesparplan, Dienste, Netzwerk, GPU-Planung). Das erlaubt Windows nur mit Admin-Rechten.</p>
+        </div>
+      </details>
+      <details class="reveal">
+        <summary><span data-l="en">Does it cost anything?</span><span data-l="de">Kostet HyperDrive etwas?</span></summary>
+        <div class="a">
+          <p data-l="en">No. HyperDrive is free – no ads, no subscription, no hidden extras.</p>
+          <p data-l="de">Nein. HyperDrive ist kostenlos – ohne Werbung, ohne Abo, ohne versteckte Extras.</p>
+        </div>
+      </details>
+      <details class="reveal">
+        <summary><span data-l="en">Does it work with AMD and Intel too?</span><span data-l="de">Funktioniert es auch mit AMD und Intel?</span></summary>
+        <div class="a">
+          <p data-l="en">Yes. The Windows, network and RAM tweaks work on every PC. The NVIDIA-specific settings only show up if you have an NVIDIA graphics card.</p>
+          <p data-l="de">Ja. Die Windows-, Netzwerk- und RAM-Tweaks funktionieren auf jedem PC. Die NVIDIA-Einstellungen erscheinen nur, wenn du eine NVIDIA-Grafikkarte hast.</p>
+        </div>
+      </details>
+      <details class="reveal">
+        <summary><span data-l="en">What data does HyperDrive send?</span><span data-l="de">Welche Daten sendet HyperDrive?</span></summary>
+        <div class="a">
+          <p data-l="en">Your account and password stay on your PC. For the online player search, HyperDrive shares your username and public profile (rank, games, best scores) so other players can find you. Update checks only ask which version is the newest.</p>
+          <p data-l="de">Dein Konto und dein Passwort bleiben auf deinem PC. Für die Online-Spielersuche teilt HyperDrive deinen Benutzernamen und dein öffentliches Profil (Rang, Spiele, Bestwerte), damit andere Spieler dich finden. Update-Prüfungen fragen nur, welche Version die neueste ist.</p>
+        </div>
+      </details>
+      <details class="reveal">
+        <summary><span data-l="en">How do I uninstall it?</span><span data-l="de">Wie deinstalliere ich es?</span></summary>
+        <div class="a">
+          <p data-l="en">Windows Settings → Apps → Installed apps → HyperDrive → Uninstall. Want Windows exactly like before? Switch the tweaks back in the app first, or use the restore point.</p>
+          <p data-l="de">Windows-Einstellungen → Apps → Installierte Apps → HyperDrive → Deinstallieren. Soll Windows genau wie vorher sein? Schalte die Tweaks vorher in der App zurück oder nutze den Wiederherstellungspunkt.</p>
+        </div>
+      </details>
     </div>
   </div>
 </section>
@@ -236,18 +417,22 @@
 <section>
   <div class="wrap">
     <div class="cta reveal">
-      <h2 class="reveal">Bereit für mehr FPS?</h2>
-      <p class="sub" style="margin-bottom:28px">Kostenlos. Jederzeit über „Apps“ in Windows deinstallierbar.</p>
+      <h2 class="reveal"><span data-l="en">Ready for more FPS?</span><span data-l="de">Bereit für mehr FPS?</span></h2>
+      <p class="sub" style="margin-bottom:28px"><span data-l="en">Free. Uninstall anytime via “Apps” in Windows.</span><span data-l="de">Kostenlos. Jederzeit über „Apps“ in Windows deinstallierbar.</span></p>
       <a class="btn big dl" href="#">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M6 10l6 6 6-6M4 21h16"/></svg>
-        Jetzt herunterladen
+        <span data-l="en">Download now</span><span data-l="de">Jetzt herunterladen</span>
       </a>
     </div>
   </div>
 </section>
 
 <footer>
-  <div class="wrap">HyperDrive • Ein Fan-Projekt – nicht mit Epic Games oder Fortnite verbunden.</div>
+  <div class="wrap">
+    <span data-l="en">HyperDrive • A fan project – not affiliated with Epic Games or Fortnite.</span>
+    <span data-l="de">HyperDrive • Ein Fan-Projekt – nicht mit Epic Games oder Fortnite verbunden.</span>
+    <div class="links"><a href="#features"><span data-l="en">Features</span><span data-l="de">Funktionen</span></a><a href="#updates">Updates</a><a href="#faq">FAQ</a></div>
+  </div>
 </footer>
 
 <script>
@@ -255,16 +440,99 @@
   const DOWNLOAD = "https://lxudcozrlkqqfmyccmlq.supabase.co/functions/v1/download";
   document.querySelectorAll(".dl").forEach(a => a.href = DOWNLOAD);
 
-  fetch(DOWNLOAD + "?info").then(r => r.json()).then(info => {
-    const kb = Math.round(info.size / 1024);
-    const date = new Date(info.published_at).toLocaleDateString("de-DE", { day: "2-digit", month: "long", year: "numeric" });
-    document.getElementById("meta").innerHTML = "Version <b>" + info.version + "</b> • Windows 10 / 11 • " + kb + " KB";
-    document.getElementById("cl-version").textContent = "Version " + info.version;
-    document.getElementById("cl-date").textContent = date;
-    document.getElementById("cl-notes").textContent = info.notes || "Verbesserungen und Fehlerbehebungen.";
-  }).catch(() => {
-    document.getElementById("cl-notes").textContent = "Die Versionshinweise konnten gerade nicht geladen werden.";
-  });
+  // Update-Verlauf (wie im Changelog der App). Neuere Versionen kommen live vom Server dazu.
+  const HISTORY = [
+    { v: "1.1.1",
+      de: "Neu: eigener RAM-Reiter bei den Tweaks\nNeu: Schnellstart aus – frischer RAM\nNeu: Browser geben RAM beim Schließen frei\nNeu: Edge-Tabs schlafen nach 5 Minuten\nPro-Check prüft die Auslagerungsdatei\nRAM-Seite: Knopf zu den RAM-Tweaks",
+      en: "New: own RAM tab for tweaks\nNew: fast startup off – fresh RAM\nNew: browsers free RAM when closed\nNew: Edge tabs sleep after 5 minutes\nPro-Check checks the page file\nRAM page: button to the RAM tweaks" },
+    { v: "1.1.0",
+      de: "Neu: Pro-Check für FPS, Ping & Input-Delay\nNeu: Maus-Test misst die Abfragerate\n„Alles beheben“ löst Probleme per Klick\nTweaks in Reitern mit Zählern sortiert\nKein Protokoll mehr – kurze Meldungen\nMehr Platz für Listen und Anzeigen",
+      en: "New: Pro-Check for FPS, ping & input delay\nNew: mouse test measures the polling rate\n“Fix everything” solves problems in one click\nTweaks sorted in tabs with counters\nNo more log – short messages instead\nMore room for lists and gauges" },
+    { v: "1.0.3",
+      de: "Ehrliche Wirkung bei jedem Tweak\nWichtiges zuerst, Unnötiges ausgegraut\nNeu: volle Monitor-Hz, Shader-Cache behalten\nNeu: Updates bremsen, schonender Virenscan\nTweak-Prüfung deutlich schneller",
+      en: "Honest impact rating for every tweak\nImportant first, unneeded greyed out\nNew: full monitor Hz, keep shader cache\nNew: throttle updates, gentler virus scan\nTweak check much faster" },
+    { v: "1.0.2",
+      de: "Animiertes Neuigkeiten-Fenster mit Konfetti\nUpdate-Fenster blenden weich ein",
+      en: "Animated what's-new window with confetti\nUpdate windows fade in smoothly" },
+    { v: "1.0.1",
+      de: "Version unten links – Klick zeigt alle Neuerungen\n„Was ist neu?“-Fenster nach jedem Update\nNeue Download-Website: hyperdrivefps.github.io\nWebsite mit Animationen",
+      en: "Version at the bottom left – click shows all changes\n“What's new?” window after every update\nNew download website: hyperdrivefps.github.io\nAnimated website" },
+    { v: "1.0.0",
+      de: "Installation als App (Startmenü & Desktop)\nAutomatische, signierte Updates\nOnline-Spielersuche mit OWNER/USER-Rang",
+      en: "Install as an app (Start menu & desktop)\nAutomatic, signed updates\nOnline player search with OWNER/USER rank" }
+  ];
+  const NOTES_SPLIT = "\n\nEnglish:\n";
+  const SHOTS = {
+    "0":  { en: "Dashboard – live CPU, GPU, RAM and drive gauges plus Turbo Boost.", de: "Dashboard – CPU, GPU, RAM und Laufwerke live, dazu der Turbo-Boost." },
+    "13": { en: "Pro-Check – finds what costs you FPS, ping or input delay and fixes it.", de: "Pro-Check – findet, was dich FPS, Ping oder Input-Delay kostet, und behebt es." },
+    "5":  { en: "Tweaks – sorted in tabs, each with an honest impact rating.", de: "Tweaks – in Reitern sortiert, jeder mit ehrlicher Einschätzung." }
+  };
+  const ALT = { en: "The HyperDrive app", de: "Die HyperDrive-App" };
+
+  let lang = "en", latest = null, shot = "0", showAll = false;
+  try { if (localStorage.getItem("hd-lang") === "de") lang = "de"; } catch (e) {}
+
+  const $ = id => document.getElementById(id);
+  const esc = t => t.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+  const lines = t => t.split("\n").map(l => l.replace(/^•\s*/, "").trim()).filter(Boolean);
+
+  function render() {
+    const de = lang === "de";
+    document.documentElement.lang = lang;
+    document.title = de ? "HyperDrive – Fortnite-Optimizer für Windows" : "HyperDrive – Fortnite optimizer for Windows";
+    document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", b.dataset.set === lang));
+    $("hero-img").src = "img/" + lang + "-0.png";
+    $("hero-img").alt = ALT[lang];
+    setShot(shot, false);
+
+    let meta = "Windows 10 / 11 • 64 Bit";
+    if (latest) meta = "Version <b>" + esc(latest.version) + "</b> • Windows 10 / 11 • " + Math.round(latest.size / 1024) + " KB";
+    $("meta").innerHTML = meta;
+
+    // Neueste Version vom Server oben einreihen, falls sie noch nicht im festen Verlauf steht
+    let list = HISTORY.slice();
+    if (latest && !list.some(r => r.v === latest.version)) {
+      const n = latest.notes || "", i = n.indexOf(NOTES_SPLIT);
+      const notesDe = i < 0 ? n : n.slice(0, i), notesEn = i < 0 ? n : n.slice(i + NOTES_SPLIT.length);
+      list.unshift({ v: latest.version, de: notesDe, en: notesEn });
+    }
+    const date = latest ? new Date(latest.published_at).toLocaleDateString(de ? "de-DE" : "en-GB", { day: "numeric", month: "long", year: "numeric" }) : "";
+    const visible = showAll ? list : list.slice(0, 3);
+    $("timeline").innerHTML = visible.map((r, k) => {
+      const isLatest = latest ? r.v === latest.version : k === 0;
+      const items = lines(r[lang] || r.de);
+      return '<div class="rel' + (isLatest ? " latest" : "") + '"><div class="v">Version ' + esc(r.v) +
+        (isLatest ? ' <span class="badge">' + (de ? "Aktuell" : "Latest") + "</span>" + (date ? " <small>" + esc(date) + "</small>" : "") : "") +
+        "</div><ul>" + (items.length ? items : [de ? "Verbesserungen und Fehlerbehebungen." : "Improvements and bug fixes."]).map(l => "<li>" + esc(l) + "</li>").join("") + "</ul></div>";
+    }).join("");
+    const more = $("more");
+    more.hidden = list.length <= 3;
+    more.textContent = showAll ? (de ? "Weniger anzeigen" : "Show less") : (de ? "Alle " + list.length + " Versionen anzeigen" : "Show all " + list.length + " versions");
+  }
+
+  function setShot(id, animate) {
+    shot = id;
+    document.querySelectorAll(".tabs button").forEach(b => b.setAttribute("aria-selected", b.dataset.shot === id));
+    const img = $("gal-img"), src = "img/" + lang + "-" + id + ".png";
+    $("gal-cap").textContent = SHOTS[id][lang];
+    img.alt = SHOTS[id][lang];
+    if (img.getAttribute("src") === src) return;
+    if (!animate) { img.src = src; return; }
+    img.classList.add("swap");
+    setTimeout(() => { img.src = src; img.onload = () => img.classList.remove("swap"); }, 180);
+  }
+
+  document.querySelectorAll(".lang button").forEach(b => b.addEventListener("click", () => {
+    lang = b.dataset.set;
+    try { localStorage.setItem("hd-lang", lang); } catch (e) {}
+    render();
+  }));
+  document.querySelectorAll(".tabs button").forEach(b => b.addEventListener("click", () => setShot(b.dataset.shot, true)));
+  $("more").addEventListener("click", () => { showAll = !showAll; render(); });
+  ["en", "de"].forEach(l => ["0", "13", "5"].forEach(i => { if (l !== lang || i !== "0") new Image().src = "img/" + l + "-" + i + ".png"; }));
+
+  render();
+  fetch(DOWNLOAD + "?info").then(r => r.json()).then(info => { latest = info; render(); }).catch(() => {});
 
   const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -288,12 +556,12 @@
   }));
 
   // Screenshot kippt leicht mit der Maus
-  const shot = document.getElementById("shot");
+  const shotEl = $("shot");
   if (!calm && matchMedia("(pointer: fine)").matches) {
     addEventListener("pointermove", e => {
-      const r = shot.getBoundingClientRect();
+      const r = shotEl.getBoundingClientRect();
       const x = (e.clientX - (r.left + r.width / 2)) / innerWidth, y = (e.clientY - (r.top + r.height / 2)) / innerHeight;
-      shot.style.transform = "rotateY(" + (x * 8).toFixed(2) + "deg) rotateX(" + (-y * 6).toFixed(2) + "deg)";
+      shotEl.style.transform = "rotateY(" + (x * 8).toFixed(2) + "deg) rotateX(" + (-y * 6).toFixed(2) + "deg)";
     });
   }
 
@@ -302,7 +570,7 @@
   addEventListener("scroll", () => nav.classList.toggle("scrolled", scrollY > 10), { passive: true });
 
   // Sternenfeld im Hintergrund – Sterne ziehen langsam vorbei, ein paar funkeln
-  const cv = document.getElementById("stars"), cx = cv.getContext("2d");
+  const cv = $("stars"), cx = cv.getContext("2d");
   let stars = [];
   function resize() {
     const dpr = Math.min(devicePixelRatio || 1, 2);
@@ -325,7 +593,7 @@
     requestAnimationFrame(tick);
   }
   resize(); addEventListener("resize", resize);
-  if (!calm) tick(); else tick && cx && stars.forEach(st => { cx.fillStyle = "rgba(" + st.c + ",.4)"; cx.fillRect(st.x, st.y, st.r, st.r); });
+  if (!calm) tick(); else stars.forEach(st => { cx.fillStyle = "rgba(" + st.c + ",.4)"; cx.fillRect(st.x, st.y, st.r, st.r); });
 </script>
 </body>
 </html>

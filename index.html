@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>HyperDrive – Fortnite optimizer for Windows</title>
 <meta name="description" content="HyperDrive: more FPS, less input delay and a faster PC for Fortnite. Free for Windows 10 and 11.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237c5cff'/%3E%3Cstop offset='1' stop-color='%2300d4ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Cpath d='M36 8 16 36h14l-4 20 22-30H34z' fill='white'/%3E%3C/svg%3E">
+<link rel="icon" type="image/png" href="img/favicon.png">
+<link rel="apple-touch-icon" href="img/logo.png">
 <style>
   :root {
     --bg: #0b0c12; --side: #10111a; --panel: #181a26; --panel2: #24273a; --track: #2c2f42;
@@ -22,8 +23,7 @@
   nav { position: sticky; top: 0; z-index: 10; background: rgba(11,12,18,.78); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(255,255,255,.06); }
   nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
   .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-  .logo { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, var(--a1), var(--a2)); display: grid; place-items: center; box-shadow: 0 6px 24px rgba(124,92,255,.35); }
-  .logo svg { width: 20px; height: 20px; }
+  .logo { width: 40px; height: 40px; border-radius: 11px; display: block; box-shadow: 0 6px 24px rgba(124,92,255,.35); }
   .brand b { font: 900 19px "Segoe UI Black", "Segoe UI", sans-serif; letter-spacing: .5px; }
   .navlinks { display: flex; gap: 22px; align-items: center; }
   .navlinks a { text-decoration: none; color: var(--muted); font-weight: 600; font-size: 15px; }
@@ -223,7 +223,7 @@
 <nav>
   <div class="wrap">
     <a class="brand" href="#">
-      <span class="logo"><svg viewBox="0 0 24 24"><path d="M13.5 2 5 13.5h6L9.5 22 19 9.5h-6.5z" fill="#fff"/></svg></span>
+      <img class="logo" src="img/logo.png" alt="" width="40" height="40">
       <b>HYPERDRIVE</b>
     </a>
     <div class="navlinks">

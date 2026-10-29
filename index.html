@@ -83,9 +83,87 @@
   .cta { text-align: center; background: linear-gradient(135deg, rgba(124,92,255,.16), rgba(0,212,255,.08)); border-radius: 24px; padding: 54px 20px; border: 1px solid rgba(255,255,255,.06); }
 
   footer { padding-block: 34px 50px; color: var(--muted); font-size: 14px; text-align: center; border-top: 1px solid rgba(255,255,255,.06); }
+
+  /* ================= Animationen ================= */
+  #stars { position: fixed; inset: 0; z-index: -2; pointer-events: none; }
+
+  /* Leuchtwolken im Hintergrund wandern langsam */
+  header::before { animation: drift1 14s ease-in-out infinite alternate; }
+  header::after  { animation: drift2 17s ease-in-out infinite alternate; }
+  @keyframes drift1 { to { transform: translate(180px, 90px) scale(1.15); } }
+  @keyframes drift2 { to { transform: translate(-200px, 120px) scale(1.2); } }
+
+  /* Hero blendet gestaffelt ein */
+  .hero-in { opacity: 0; transform: translateY(26px); animation: rise .9s cubic-bezier(.2,.8,.2,1) forwards; }
+  .hero-in:nth-child(1) { animation-delay: .05s; }
+  .hero-in:nth-child(2) { animation-delay: .18s; }
+  .hero-in:nth-child(3) { animation-delay: .32s; }
+  .hero-in:nth-child(4) { animation-delay: .46s; }
+  .hero-in:nth-child(5) { animation-delay: .58s; }
+  .hero-in:nth-child(6) { animation-delay: .72s; }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+
+  /* Farbverlauf im Titel fließt */
+  h1 span { background-size: 200% auto; animation: flow 5s linear infinite;
+            background-image: linear-gradient(90deg, var(--a1), var(--a2), #b18cff, var(--a1)); }
+  @keyframes flow { to { background-position: 200% center; } }
+
+  /* Logo-Blitz pulsiert */
+  .logo { animation: logoGlow 2.6s ease-in-out infinite; }
+  @keyframes logoGlow { 50% { box-shadow: 0 6px 34px rgba(0,212,255,.55); } }
+
+  /* Großer Download-Knopf: Glanz läuft drüber + sanftes Pulsieren */
+  .btn { position: relative; overflow: hidden; background-size: 200% auto; transition: transform .15s, box-shadow .15s, background-position .5s; }
+  .btn:hover { background-position: right center; }
+  .btn::after { content: ""; position: absolute; top: 0; left: -60%; width: 40%; height: 100%;
+                background: linear-gradient(100deg, transparent, rgba(255,255,255,.45), transparent); transform: skewX(-20deg); animation: shine 3.2s ease-in-out infinite; }
+  @keyframes shine { 0%, 55% { left: -60%; } 100% { left: 130%; } }
+  .btn.big { animation: pulse 2.4s ease-in-out infinite; }
+  .btn.big.hero-in { animation: rise .9s cubic-bezier(.2,.8,.2,1) .46s forwards, pulse 2.4s ease-in-out 1.4s infinite; }
+  @keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(0,212,255,.35), 0 10px 30px rgba(124,92,255,.3); }
+                     50% { box-shadow: 0 0 0 14px rgba(0,212,255,0), 0 14px 44px rgba(0,212,255,.35); } }
+  .btn svg { transition: transform .25s; }
+  .btn:hover svg { transform: translateY(3px); }
+
+  /* Screenshot schwebt und kippt mit der Maus */
+  .shot-wrap { perspective: 1400px; margin-top: 56px; }
+  .shot { margin: 0 auto; transform-style: preserve-3d; transition: transform .25s ease-out; animation: float 6s ease-in-out infinite; position: relative; }
+  .shot::before { content: ""; position: absolute; inset: -2px; border-radius: 20px; z-index: -1;
+                  background: conic-gradient(from var(--ang, 0deg), var(--a1), var(--a2), #b18cff, var(--a1)); filter: blur(18px); opacity: .55; animation: spin 6s linear infinite; }
+  @property --ang { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+  @keyframes spin { to { --ang: 360deg; } }
+  @keyframes float { 50% { translate: 0 -12px; } }
+
+  /* Elemente erscheinen beim Scrollen */
+  .reveal { opacity: 0; transform: translateY(34px) scale(.98); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.8,.2,1); }
+  .reveal.show { opacity: 1; transform: none; }
+
+  /* Karten: Licht folgt der Maus */
+  .card, .step { position: relative; overflow: hidden; }
+  .card::before, .step::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .3s;
+                  background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), rgba(0,212,255,.14), transparent 60%); }
+  .card:hover::before, .step:hover::after { opacity: 1; }
+  .card .ic { transition: transform .35s cubic-bezier(.3,1.6,.5,1); }
+  .card:hover .ic { transform: rotate(-8deg) scale(1.15); }
+  .card:hover { box-shadow: 0 18px 50px rgba(0,0,0,.35); }
+  .card.show:hover, .step.show:hover { transform: translateY(-4px); transition-delay: 0s; }
+
+  /* Schritt-Nummern ploppen auf */
+  .step.show::before { animation: pop .6s cubic-bezier(.3,1.8,.5,1) both; animation-delay: inherit; }
+  @keyframes pop { from { transform: scale(0) rotate(-90deg); } to { transform: none; } }
+
+  /* Navigation bekommt beim Scrollen Tiefe */
+  nav { transition: background .3s, box-shadow .3s; }
+  nav.scrolled { background: rgba(11,12,18,.92); box-shadow: 0 10px 30px rgba(0,0,0,.35); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .hero-in, .reveal { opacity: 1; transform: none; }
+  }
 </style>
 </head>
 <body>
+<canvas id="stars" aria-hidden="true"></canvas>
 
 <nav>
   <div class="wrap">
@@ -104,51 +182,51 @@
 
 <header>
   <div class="wrap">
-    <span class="pill">Kostenlos für Windows 10 &amp; 11</span>
-    <h1>Mehr FPS.<br><span>Weniger Input-Delay.</span></h1>
-    <p class="lead">HyperDrive optimiert deinen PC mit einem Klick für Fortnite – über 50 Tweaks für FPS, Ping und Eingabeverzögerung, ein RAM-Cleaner, Game-Modus und mehr.</p>
-    <a class="btn big dl" href="#">
+    <span class="pill hero-in">Kostenlos für Windows 10 &amp; 11</span>
+    <h1 class="hero-in">Mehr FPS.<br><span>Weniger Input-Delay.</span></h1>
+    <p class="lead hero-in">HyperDrive optimiert deinen PC mit einem Klick für Fortnite – über 50 Tweaks für FPS, Ping und Eingabeverzögerung, ein RAM-Cleaner, Game-Modus und mehr.</p>
+    <a class="btn big dl hero-in" href="#">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M6 10l6 6 6-6M4 21h16"/></svg>
       HyperDrive herunterladen
     </a>
-    <div class="meta" id="meta">Windows 10 / 11 • 64 Bit</div>
-    <div class="shot"><img src="screenshot.png" alt="Das HyperDrive-Dashboard mit CPU-, GPU-, RAM- und Laufwerksanzeige und dem Turbo-Boost-Knopf" width="1126" height="740"></div>
+    <div class="meta hero-in" id="meta">Windows 10 / 11 • 64 Bit</div>
+    <div class="shot-wrap hero-in"><div class="shot" id="shot"><img src="screenshot.png" alt="Das HyperDrive-Dashboard mit CPU-, GPU-, RAM- und Laufwerksanzeige und dem Turbo-Boost-Knopf" width="1126" height="740"></div></div>
   </div>
 </header>
 
 <section id="features">
   <div class="wrap">
-    <h2>Alles, was dein Gaming-PC braucht</h2>
-    <p class="sub">Jede Änderung lässt sich mit einem Klick rückgängig machen – vorher legt HyperDrive einen Wiederherstellungspunkt an.</p>
+    <h2 class="reveal">Alles, was dein Gaming-PC braucht</h2>
+    <p class="sub reveal">Jede Änderung lässt sich mit einem Klick rückgängig machen – vorher legt HyperDrive einen Wiederherstellungspunkt an.</p>
     <div class="grid">
-      <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></svg></div><h3>Turbo-Boost</h3><p>Ein Klick: Wiederherstellungspunkt, Bereinigung, RAM, Gaming-Tweaks und DNS.</p></div>
-      <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 18h16M7 14l3-4 3 3 4-6"/></svg></div><h3>50+ Tweaks</h3><p>Für FPS, Input-Delay und Ping – mit ehrlicher Einschätzung, was jeder Tweak bringt.</p></div>
-      <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="3"/><path d="M8 12h3M9.5 10.5v3M15 11h.01M17 13h.01"/></svg></div><h3>Fortnite-Presets</h3><p>Competitive, Balanced oder Potato – die passenden Grafik-Einstellungen in Sekunden.</p></div>
-      <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="10" rx="1"/><path d="M8 7V4M12 7V4M16 7V4M8 20v-3M12 20v-3M16 20v-3"/></svg></div><h3>RAM-Cleaner</h3><p>Findet Speicherfresser, leert den Standby-Speicher und räumt automatisch auf.</p></div>
-      <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></div><h3>Spielersuche</h3><p>Finde andere HyperDrive-Spieler – mit Profil, Rang, Spielen und Bestwerten.</p></div>
-      <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"/></svg></div><h3>Automatische Updates</h3><p>Neue Versionen kommen von selbst – jedes Update ist digital signiert und wird vor der Installation geprüft.</p></div>
+      <div class="card reveal"><div class="ic"><svg viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></svg></div><h3>Turbo-Boost</h3><p>Ein Klick: Wiederherstellungspunkt, Bereinigung, RAM, Gaming-Tweaks und DNS.</p></div>
+      <div class="card reveal"><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 18h16M7 14l3-4 3 3 4-6"/></svg></div><h3>50+ Tweaks</h3><p>Für FPS, Input-Delay und Ping – mit ehrlicher Einschätzung, was jeder Tweak bringt.</p></div>
+      <div class="card reveal"><div class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="3"/><path d="M8 12h3M9.5 10.5v3M15 11h.01M17 13h.01"/></svg></div><h3>Fortnite-Presets</h3><p>Competitive, Balanced oder Potato – die passenden Grafik-Einstellungen in Sekunden.</p></div>
+      <div class="card reveal"><div class="ic"><svg viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="10" rx="1"/><path d="M8 7V4M12 7V4M16 7V4M8 20v-3M12 20v-3M16 20v-3"/></svg></div><h3>RAM-Cleaner</h3><p>Findet Speicherfresser, leert den Standby-Speicher und räumt automatisch auf.</p></div>
+      <div class="card reveal"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></div><h3>Spielersuche</h3><p>Finde andere HyperDrive-Spieler – mit Profil, Rang, Spielen und Bestwerten.</p></div>
+      <div class="card reveal"><div class="ic"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"/></svg></div><h3>Automatische Updates</h3><p>Neue Versionen kommen von selbst – jedes Update ist digital signiert und wird vor der Installation geprüft.</p></div>
     </div>
   </div>
 </section>
 
 <section id="install">
   <div class="wrap">
-    <h2>In einer Minute installiert</h2>
-    <p class="sub">Keine Werbung, keine Toolbars – nur HyperDrive.</p>
+    <h2 class="reveal">In einer Minute installiert</h2>
+    <p class="sub reveal">Keine Werbung, keine Toolbars – nur HyperDrive.</p>
     <div class="steps">
-      <div class="step"><h3>Herunterladen</h3><p>Klick auf „Download“. Du bekommst die Datei <code>HyperDrive-Setup.exe</code>.</p></div>
-      <div class="step"><h3>Starten</h3><p>Datei öffnen und bei der Windows-Abfrage auf <code>Ja</code> klicken – HyperDrive braucht Admin-Rechte für die Tweaks.</p></div>
-      <div class="step"><h3>Installieren</h3><p>Auf <code>Installieren</code> klicken. HyperDrive landet im Startmenü und auf dem Desktop – fertig.</p></div>
+      <div class="step reveal"><h3>Herunterladen</h3><p>Klick auf „Download“. Du bekommst die Datei <code>HyperDrive-Setup.exe</code>.</p></div>
+      <div class="step reveal"><h3>Starten</h3><p>Datei öffnen und bei der Windows-Abfrage auf <code>Ja</code> klicken – HyperDrive braucht Admin-Rechte für die Tweaks.</p></div>
+      <div class="step reveal"><h3>Installieren</h3><p>Auf <code>Installieren</code> klicken. HyperDrive landet im Startmenü und auf dem Desktop – fertig.</p></div>
     </div>
-    <div class="note"><b>Blauer Windows-Hinweis „Der Computer wurde durch Windows geschützt“?</b> Das kommt bei neuen Programmen ohne gekauftes Zertifikat. Klick auf <b>„Weitere Informationen“</b> und dann auf <b>„Trotzdem ausführen“</b>.</div>
+    <div class="note reveal"><b>Blauer Windows-Hinweis „Der Computer wurde durch Windows geschützt“?</b> Das kommt bei neuen Programmen ohne gekauftes Zertifikat. Klick auf <b>„Weitere Informationen“</b> und dann auf <b>„Trotzdem ausführen“</b>.</div>
   </div>
 </section>
 
 <section id="neu">
   <div class="wrap">
-    <h2>Was ist neu?</h2>
-    <p class="sub">Installierte Versionen aktualisieren sich automatisch.</p>
-    <div class="changelog">
+    <h2 class="reveal">Was ist neu?</h2>
+    <p class="sub reveal">Installierte Versionen aktualisieren sich automatisch.</p>
+    <div class="changelog reveal">
       <div class="v"><span id="cl-version">Neueste Version</span><span id="cl-date"></span></div>
       <p id="cl-notes">Lade …</p>
     </div>
@@ -157,8 +235,8 @@
 
 <section>
   <div class="wrap">
-    <div class="cta">
-      <h2>Bereit für mehr FPS?</h2>
+    <div class="cta reveal">
+      <h2 class="reveal">Bereit für mehr FPS?</h2>
       <p class="sub" style="margin-bottom:28px">Kostenlos. Jederzeit über „Apps“ in Windows deinstallierbar.</p>
       <a class="btn big dl" href="#">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M6 10l6 6 6-6M4 21h16"/></svg>
@@ -187,6 +265,67 @@
   }).catch(() => {
     document.getElementById("cl-notes").textContent = "Die Versionshinweise konnten gerade nicht geladen werden.";
   });
+
+  const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Beim Scrollen einblenden – Geschwister in einem Raster leicht versetzt
+  const io = new IntersectionObserver(entries => entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const sibs = [...e.target.parentElement.children].filter(c => c.classList.contains("reveal"));
+    const d = Math.max(0, sibs.indexOf(e.target)) * 90;
+    e.target.style.transitionDelay = d + "ms";
+    e.target.style.animationDelay = d + "ms";
+    e.target.classList.add("show");
+    io.unobserve(e.target);
+  }), { threshold: .15 });
+  document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+
+  // Licht auf den Karten folgt der Maus
+  document.querySelectorAll(".card, .step").forEach(c => c.addEventListener("pointermove", e => {
+    const r = c.getBoundingClientRect();
+    c.style.setProperty("--mx", (e.clientX - r.left) + "px");
+    c.style.setProperty("--my", (e.clientY - r.top) + "px");
+  }));
+
+  // Screenshot kippt leicht mit der Maus
+  const shot = document.getElementById("shot");
+  if (!calm && matchMedia("(pointer: fine)").matches) {
+    addEventListener("pointermove", e => {
+      const r = shot.getBoundingClientRect();
+      const x = (e.clientX - (r.left + r.width / 2)) / innerWidth, y = (e.clientY - (r.top + r.height / 2)) / innerHeight;
+      shot.style.transform = "rotateY(" + (x * 8).toFixed(2) + "deg) rotateX(" + (-y * 6).toFixed(2) + "deg)";
+    });
+  }
+
+  // Navigation bekommt beim Scrollen einen Schatten
+  const nav = document.querySelector("nav");
+  addEventListener("scroll", () => nav.classList.toggle("scrolled", scrollY > 10), { passive: true });
+
+  // Sternenfeld im Hintergrund – Sterne ziehen langsam vorbei, ein paar funkeln
+  const cv = document.getElementById("stars"), cx = cv.getContext("2d");
+  let stars = [];
+  function resize() {
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    cv.width = innerWidth * dpr; cv.height = innerHeight * dpr;
+    cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    stars = Array.from({ length: Math.round(innerWidth * innerHeight / 9000) }, () => ({
+      x: Math.random() * innerWidth, y: Math.random() * innerHeight, r: Math.random() * 1.3 + .2,
+      s: Math.random() * .25 + .05, t: Math.random() * Math.PI * 2, c: Math.random() < .5 ? "124,92,255" : "0,212,255"
+    }));
+  }
+  function tick() {
+    cx.clearRect(0, 0, innerWidth, innerHeight);
+    for (const st of stars) {
+      st.y -= st.s; st.t += .02;
+      if (st.y < -2) { st.y = innerHeight + 2; st.x = Math.random() * innerWidth; }
+      const a = .25 + Math.sin(st.t) * .25 + .25;
+      cx.fillStyle = "rgba(" + st.c + "," + a.toFixed(2) + ")";
+      cx.beginPath(); cx.arc(st.x, st.y, st.r, 0, Math.PI * 2); cx.fill();
+    }
+    requestAnimationFrame(tick);
+  }
+  resize(); addEventListener("resize", resize);
+  if (!calm) tick(); else tick && cx && stars.forEach(st => { cx.fillStyle = "rgba(" + st.c + ",.4)"; cx.fillRect(st.x, st.y, st.r, st.r); });
 </script>
 </body>
 </html>

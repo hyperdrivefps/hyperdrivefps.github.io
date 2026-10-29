@@ -211,14 +211,33 @@
 
   h1 span.plain { background: none; color: inherit; animation: none; }
 
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation: none !important; transition: none !important; }
-    .hero-in, .reveal { opacity: 1; transform: none; }
-  }
+  /* Fortschrittsbalken beim Scrollen */
+  #progress { position: fixed; top: 0; left: 0; height: 3px; width: 100%; z-index: 20; transform-origin: 0 50%; transform: scaleX(0);
+              background: linear-gradient(90deg, var(--a1), var(--a2)); box-shadow: 0 0 12px rgba(0,212,255,.6); }
+
+  /* Zahlen-Leiste unter dem Hero */
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; max-width: 820px; margin: 0 auto; }
+  .stat { background: var(--panel); border: 1px solid rgba(255,255,255,.06); border-radius: 18px; padding: 22px 12px; text-align: center; }
+  .stat b { display: block; font: 900 clamp(34px, 6vw, 52px)/1 "Segoe UI Black", "Segoe UI", sans-serif;
+            background: linear-gradient(90deg, var(--a1), var(--a2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .stat span { color: var(--muted); font-size: 14px; font-weight: 600; letter-spacing: .5px; }
+  @media (max-width: 520px) { .stat { padding: 16px 6px; } }
+
+  /* Überschriften: Leuchtlinie wächst beim Einblenden */
+  h2.reveal::after { content: ""; display: block; width: 0; height: 4px; margin: 14px auto 0; border-radius: 4px;
+                     background: linear-gradient(90deg, var(--a1), var(--a2)); transition: width .9s cubic-bezier(.2,.8,.2,1) .25s; }
+  h2.reveal.show::after { width: 90px; }
+
+  /* Galerie: Zeitbalken im aktiven Reiter */
+  .tabs button { position: relative; overflow: hidden; }
+  .tabs button i { position: absolute; left: 0; bottom: 0; height: 3px; width: 100%; background: #fff; opacity: .7; transform-origin: 0 50%; transform: scaleX(0); }
+
+
 </style>
 </head>
 <body>
 <canvas id="stars" aria-hidden="true"></canvas>
+<div id="progress"></div>
 
 <nav>
   <div class="wrap">
@@ -256,6 +275,16 @@
     <div class="shot-wrap hero-in"><div class="shot" id="shot"><img id="hero-img" src="img/en-0.png" alt="" width="1126" height="740"></div></div>
   </div>
 </header>
+
+<section style="padding-block: 8px 0">
+  <div class="wrap">
+    <div class="stats">
+      <div class="stat reveal"><b data-count="50" data-suffix="+">0</b><span data-l="en">TWEAKS</span><span data-l="de">TWEAKS</span></div>
+      <div class="stat reveal"><b data-count="1">0</b><span data-l="en">CLICK TO BOOST</span><span data-l="de">KLICK ZUM BOOST</span></div>
+      <div class="stat reveal"><b data-count="100" data-suffix="%">0</b><span data-l="en">FREE</span><span data-l="de">KOSTENLOS</span></div>
+    </div>
+  </div>
+</section>
 
 <section id="features">
   <div class="wrap">
@@ -308,9 +337,9 @@
     <p class="sub reveal"><span data-l="en">Dark, clean and fast – everything at a glance.</span><span data-l="de">Dunkel, aufgeräumt und schnell – alles auf einen Blick.</span></p>
     <div class="gallery reveal">
       <div class="tabs" role="tablist">
-        <button type="button" role="tab" data-shot="0" aria-selected="true">Dashboard</button>
-        <button type="button" role="tab" data-shot="13" aria-selected="false">Pro-Check</button>
-        <button type="button" role="tab" data-shot="5" aria-selected="false">Tweaks</button>
+        <button type="button" role="tab" data-shot="0" aria-selected="true">Dashboard<i></i></button>
+        <button type="button" role="tab" data-shot="13" aria-selected="false">Pro-Check<i></i></button>
+        <button type="button" role="tab" data-shot="5" aria-selected="false">Tweaks<i></i></button>
       </div>
       <div class="frame"><img id="gal-img" src="img/en-0.png" alt="" width="1126" height="740" loading="lazy"></div>
       <p class="caption" id="gal-cap"></p>
@@ -527,14 +556,44 @@
     try { localStorage.setItem("hd-lang", lang); } catch (e) {}
     render();
   }));
-  document.querySelectorAll(".tabs button").forEach(b => b.addEventListener("click", () => setShot(b.dataset.shot, true)));
+  document.querySelectorAll(".tabs button").forEach(b => b.addEventListener("click", () => { setShot(b.dataset.shot, true); galT = 0; }));
   $("more").addEventListener("click", () => { showAll = !showAll; render(); });
   ["en", "de"].forEach(l => ["0", "13", "5"].forEach(i => { if (l !== lang || i !== "0") new Image().src = "img/" + l + "-" + i + ".png"; }));
 
   render();
   fetch(DOWNLOAD + "?info").then(r => r.json()).then(info => { latest = info; render(); }).catch(() => {});
 
-  const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // Galerie wechselt alle 5 Sekunden von selbst (sobald sie zu sehen ist)
+  const ORDER = ["0", "13", "5"], GAL_MS = 5000;
+  let galT = 0, galLast = 0, galSeen = false;
+  new IntersectionObserver(es => es.forEach(e => galSeen = e.isIntersecting), { threshold: .3 }).observe($("gal-img"));
+  function galTick(now) {
+    const dt = galLast ? now - galLast : 0; galLast = now;
+    if (galSeen && !document.hidden) galT += dt;
+    if (galT >= GAL_MS) { galT = 0; setShot(ORDER[(ORDER.indexOf(shot) + 1) % ORDER.length], true); }
+    document.querySelectorAll(".tabs button").forEach(b => b.querySelector("i").style.transform = "scaleX(" + (b.dataset.shot === shot ? galT / GAL_MS : 0) + ")");
+    requestAnimationFrame(galTick);
+  }
+  requestAnimationFrame(galTick);
+
+  // Zähler laufen hoch, wenn sie ins Bild kommen
+  const countIO = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el = e.target, to = +el.dataset.count, suf = el.dataset.suffix || "", t0 = performance.now();
+    (function step(now) {
+      const p = Math.min(1, (now - t0) / 1400), v = Math.round(to * (1 - Math.pow(1 - p, 3)));
+      el.textContent = v + suf;
+      if (p < 1) requestAnimationFrame(step);
+    })(t0);
+    countIO.unobserve(el);
+  }), { threshold: .6 });
+  document.querySelectorAll("[data-count]").forEach(el => countIO.observe(el));
+
+  // Fortschrittsbalken oben
+  const bar = $("progress");
+  addEventListener("scroll", () => bar.style.transform = "scaleX(" + (scrollY / Math.max(1, document.documentElement.scrollHeight - innerHeight)) + ")", { passive: true });
+
+  const calm = false;
 
   // Beim Scrollen einblenden – Geschwister in einem Raster leicht versetzt
   const io = new IntersectionObserver(entries => entries.forEach(e => {
@@ -569,31 +628,40 @@
   const nav = document.querySelector("nav");
   addEventListener("scroll", () => nav.classList.toggle("scrolled", scrollY > 10), { passive: true });
 
-  // Sternenfeld im Hintergrund – Sterne ziehen langsam vorbei, ein paar funkeln
+  // Sternenfeld: Flug durch den Hyperraum – beim Laden ein Warp-Sprung, beim Scrollen schneller
   const cv = $("stars"), cx = cv.getContext("2d");
-  let stars = [];
+  const STARS = Array.from({ length: 420 }, () => ({ x: (Math.random() * 2 - 1) * 1.6, y: (Math.random() * 2 - 1) * 1.2, z: Math.random(),
+    c: ["255,255,255", "124,92,255", "0,212,255"][Math.floor(Math.random() * 3)], b: .35 + Math.random() * .65 }));
+  let dist = 0, boost = 0, lastY = scrollY, lastT = 0;
+  const born = performance.now();
   function resize() {
     const dpr = Math.min(devicePixelRatio || 1, 2);
     cv.width = innerWidth * dpr; cv.height = innerHeight * dpr;
     cx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    stars = Array.from({ length: Math.round(innerWidth * innerHeight / 9000) }, () => ({
-      x: Math.random() * innerWidth, y: Math.random() * innerHeight, r: Math.random() * 1.3 + .2,
-      s: Math.random() * .25 + .05, t: Math.random() * Math.PI * 2, c: Math.random() < .5 ? "124,92,255" : "0,212,255"
-    }));
   }
-  function tick() {
-    cx.clearRect(0, 0, innerWidth, innerHeight);
-    for (const st of stars) {
-      st.y -= st.s; st.t += .02;
-      if (st.y < -2) { st.y = innerHeight + 2; st.x = Math.random() * innerWidth; }
-      const a = .25 + Math.sin(st.t) * .25 + .25;
-      cx.fillStyle = "rgba(" + st.c + "," + a.toFixed(2) + ")";
-      cx.beginPath(); cx.arc(st.x, st.y, st.r, 0, Math.PI * 2); cx.fill();
+  addEventListener("scroll", () => { boost = Math.min(10, boost + Math.abs(scrollY - lastY) * .03); lastY = scrollY; }, { passive: true });
+  function tick(now) {
+    const dt = Math.min(.05, lastT ? (now - lastT) / 1000 : 0); lastT = now;
+    const age = (now - born) / 1000;
+    const intro = age < 1.8 ? 26 * Math.pow(1 - age / 1.8, 2) : 0;
+    boost *= .93;
+    const speed = .35 + intro + boost;
+    dist += speed * dt * .09;
+    const w = innerWidth, h = innerHeight, f = Math.max(w, h) * .45;
+    cx.clearRect(0, 0, w, h);
+    cx.lineCap = "round";
+    for (const st of STARS) {
+      const z = ((st.z - dist) % 1 + 1) % 1 + .02, z2 = Math.min(1.1, z + .0035 * speed + .002);
+      const x1 = w / 2 + st.x / z * f, y1 = h / 2 + st.y / z * f, x2 = w / 2 + st.x / z2 * f, y2 = h / 2 + st.y / z2 * f;
+      if (x1 < -20 || x1 > w + 20 || y1 < -20 || y1 > h + 20) continue;
+      cx.strokeStyle = "rgba(" + st.c + "," + (Math.min(1, (1 - z) * 1.3) * st.b).toFixed(2) + ")";
+      cx.lineWidth = Math.max(1, (1 - z) * 3.2);
+      cx.beginPath(); cx.moveTo(x2, y2); cx.lineTo(x1 + .3, y1); cx.stroke();
     }
     requestAnimationFrame(tick);
   }
   resize(); addEventListener("resize", resize);
-  if (!calm) tick(); else stars.forEach(st => { cx.fillStyle = "rgba(" + st.c + ",.4)"; cx.fillRect(st.x, st.y, st.r, st.r); });
+  requestAnimationFrame(tick);
 </script>
 </body>
 </html>

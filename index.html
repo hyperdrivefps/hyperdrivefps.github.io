@@ -209,6 +209,14 @@
   footer .links { margin-top: 8px; display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; }
   footer .links a { color: var(--muted); }
 
+
+  /* Discord */
+  .dc-icon { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 11px; background: #5865F2; color: #fff; transition: transform .2s, box-shadow .2s; }
+  .dc-icon:hover { transform: translateY(-2px) rotate(-6deg); box-shadow: 0 8px 24px rgba(88,101,242,.5); }
+  .dc-icon svg { width: 22px; height: 22px; }
+  .btn.discord { background: linear-gradient(90deg, #5865F2, #7c5cff); margin-left: 12px; animation: none; }
+  .btn.discord:hover { box-shadow: 0 10px 34px rgba(88,101,242,.45); }
+  @media (max-width: 640px) { .btn.discord { margin: 12px 0 0; } }
   h1 span.plain { background: none; color: inherit; animation: none; }
 
   /* Fortschrittsbalken beim Scrollen */
@@ -254,6 +262,7 @@
         <button type="button" data-set="en" aria-pressed="true">EN</button>
         <button type="button" data-set="de" aria-pressed="false">DE</button>
       </div>
+      <a class="dc-icon" href="https://discord.gg/hRx8sk6vDd" target="_blank" rel="noopener" title="Discord" aria-label="Discord"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.3 4.4A19.6 19.6 0 0 0 15.4 3l-.6 1.3a18 18 0 0 0-5.6 0L8.6 3a19.6 19.6 0 0 0-4.9 1.4C.6 9.1-.3 13.6.1 18.1a19.8 19.8 0 0 0 6 3l1.3-2a12.8 12.8 0 0 1-2-1l.5-.4a14 14 0 0 0 12.2 0l.5.4c-.6.4-1.3.7-2 1l1.3 2a19.7 19.7 0 0 0 6-3c.5-5.2-.8-9.7-3.6-13.7ZM8.5 15.3c-1.2 0-2.2-1.1-2.2-2.4s1-2.4 2.2-2.4 2.2 1.1 2.2 2.4-1 2.4-2.2 2.4Zm7 0c-1.2 0-2.2-1.1-2.2-2.4s1-2.4 2.2-2.4 2.2 1.1 2.2 2.4-1 2.4-2.2 2.4Z"/></svg></a>
       <a class="btn dl" href="#">Download</a>
     </div>
   </div>
@@ -452,6 +461,11 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M6 10l6 6 6-6M4 21h16"/></svg>
         <span data-l="en">Download now</span><span data-l="de">Jetzt herunterladen</span>
       </a>
+      <a class="btn big discord" href="https://discord.gg/hRx8sk6vDd" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.3 4.4A19.6 19.6 0 0 0 15.4 3l-.6 1.3a18 18 0 0 0-5.6 0L8.6 3a19.6 19.6 0 0 0-4.9 1.4C.6 9.1-.3 13.6.1 18.1a19.8 19.8 0 0 0 6 3l1.3-2a12.8 12.8 0 0 1-2-1l.5-.4a14 14 0 0 0 12.2 0l.5.4c-.6.4-1.3.7-2 1l1.3 2a19.7 19.7 0 0 0 6-3c.5-5.2-.8-9.7-3.6-13.7ZM8.5 15.3c-1.2 0-2.2-1.1-2.2-2.4s1-2.4 2.2-2.4 2.2 1.1 2.2 2.4-1 2.4-2.2 2.4Zm7 0c-1.2 0-2.2-1.1-2.2-2.4s1-2.4 2.2-2.4 2.2 1.1 2.2 2.4-1 2.4-2.2 2.4Z"/></svg>
+        <span data-l="en">Join the Discord</span><span data-l="de">Discord beitreten</span>
+      </a>
+      <p class="sub" style="margin:22px auto 0"><span data-l="en">Ranks as roles, squad search, giveaways, tournaments and help from the team.</span><span data-l="de">Ränge als Rollen, Mitspieler-Suche, Giveaways, Turniere und Hilfe vom Team.</span></p>
     </div>
   </div>
 </section>
@@ -460,7 +474,7 @@
   <div class="wrap">
     <span data-l="en">HyperDrive • A fan project – not affiliated with Epic Games or Fortnite.</span>
     <span data-l="de">HyperDrive • Ein Fan-Projekt – nicht mit Epic Games oder Fortnite verbunden.</span>
-    <div class="links"><a href="#features"><span data-l="en">Features</span><span data-l="de">Funktionen</span></a><a href="#updates">Updates</a><a href="#faq">FAQ</a></div>
+    <div class="links"><a href="#features"><span data-l="en">Features</span><span data-l="de">Funktionen</span></a><a href="#updates">Updates</a><a href="#faq">FAQ</a><a href="https://discord.gg/hRx8sk6vDd" target="_blank" rel="noopener">Discord</a></div>
   </div>
 </footer>
 

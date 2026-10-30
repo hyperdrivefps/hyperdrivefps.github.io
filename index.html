@@ -3,10 +3,43 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>HyperDrive – Fortnite optimizer for Windows</title>
-<meta name="description" content="HyperDrive: more FPS, less input delay and a faster PC for Fortnite. Free for Windows 10 and 11.">
+<title>HyperDrive – Free Fortnite FPS Boost &amp; PC Optimizer for Windows</title>
+<meta name="description" content="HyperDrive is a free Fortnite optimizer for Windows 10 and 11: more FPS, less input delay, stable ping and a faster PC in one click. Kostenloser Fortnite FPS-Boost.">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0b0c12">
+<link rel="canonical" href="https://hyperdrivefps.github.io/">
 <link rel="icon" type="image/png" href="img/favicon.png">
 <link rel="apple-touch-icon" href="img/logo.png">
+<!-- Vorschau beim Teilen (Discord, WhatsApp, TikTok, X) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="HyperDrive">
+<meta property="og:url" content="https://hyperdrivefps.github.io/">
+<meta property="og:title" content="HyperDrive – Free Fortnite FPS Boost">
+<meta property="og:description" content="More FPS, less input delay and a faster PC for Fortnite. Free for Windows 10 and 11.">
+<meta property="og:image" content="https://hyperdrivefps.github.io/img/en-0.png">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="de_DE">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="HyperDrive – Free Fortnite FPS Boost">
+<meta name="twitter:description" content="More FPS, less input delay and a faster PC for Fortnite. Free for Windows 10 and 11.">
+<meta name="twitter:image" content="https://hyperdrivefps.github.io/img/en-0.png">
+<!-- Für Google: das ist eine kostenlose Windows-App -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "HyperDrive",
+  "description": "Free Fortnite optimizer for Windows: more FPS, less input delay, stable ping and a faster PC.",
+  "url": "https://hyperdrivefps.github.io/",
+  "image": "https://hyperdrivefps.github.io/img/logo-1024.png",
+  "screenshot": "https://hyperdrivefps.github.io/img/en-0.png",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Windows 10, Windows 11",
+  "inLanguage": ["en", "de"],
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+  "sameAs": ["https://discord.gg/hRx8sk6vDd"]
+}
+</script>
 <style>
   :root {
     --bg: #0b0c12; --side: #10111a; --panel: #181a26; --panel2: #24273a; --track: #2c2f42;
@@ -522,7 +555,7 @@
   function render() {
     const de = lang === "de";
     document.documentElement.lang = lang;
-    document.title = de ? "HyperDrive – Fortnite-Optimizer für Windows" : "HyperDrive – Fortnite optimizer for Windows";
+    document.title = de ? "HyperDrive – Kostenloser Fortnite FPS-Boost & PC-Optimizer für Windows" : "HyperDrive – Free Fortnite FPS Boost & PC Optimizer for Windows";
     document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", b.dataset.set === lang));
     $("hero-img").src = "img/" + lang + "-0.png";
     $("hero-img").alt = ALT[lang];

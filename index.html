@@ -754,12 +754,15 @@
   // Winter: automatisch vom 1. Dezember bis 6. Januar (zum Testen mit ?winter)
   (function () {
     const d = new Date();
-    if (!(/[?&]winter/.test(location.search) || d.getMonth() === 11 || (d.getMonth() === 0 && d.getDate() <= 6))) return;
+    const nov = d.getMonth() === 10 && (d.getDate() > 3 || (d.getDate() === 3 && d.getHours() >= 20));
+    if (!(/[?&]winter/.test(location.search) || nov || d.getMonth() === 11 || (d.getMonth() === 0 && d.getDate() <= 6))) return;
     document.documentElement.classList.add("winter");
     // Schneekappen auf Karten, Schritten, Zählern, FAQ und Bildrahmen
     document.querySelectorAll(".card, .step, .stat, .cta, .faq details, .frame").forEach(el => el.insertAdjacentHTML("afterbegin", '<i class="cap"></i>'));
-    // Weihnachtsmütze auf dem Logo
-    document.querySelector(".brand").insertAdjacentHTML("afterbegin",
+    // Winter-Logo (mit Mütze und Schnee) und Favicon
+    document.querySelector(".brand .logo").src = "img/logo-winter.png";
+    document.querySelector('link[rel="icon"]').href = "img/favicon-winter.png";
+    if (false) document.querySelector(".brand").insertAdjacentHTML("afterbegin",
       '<svg class="hat" viewBox="0 0 44 32" aria-hidden="true"><path d="M5 26 C8 10 20 2 39 6 L35 26 Z" fill="#d8283c"/><path d="M5 26 C8 10 20 2 39 6 L37 14 C26 10 15 15 10 26 Z" fill="#ef4459" opacity=".55"/>' +
       '<rect x="2" y="23" width="36" height="8" rx="4" fill="#f3f8ff"/><circle cx="39" cy="6" r="4.6" fill="#f3f8ff"/></svg>');
     // Weihnachtsgruß über der Überschrift
